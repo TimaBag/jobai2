@@ -20,7 +20,7 @@ function App() {
 			domain={domain}
 			clientId={clientId}
 			authorizationParams={{
-				redirect_uri: '',
+				redirect_uri: 'https://jobai-qxn2.vercel.app/login',
 			}}
 		>
 			<div style={{ display: 'flex' }}>
