@@ -20,48 +20,9 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material'
-import { useQuery } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getCandidateLists } from '../services/user.service'
-
-const mockCandidates = [
-	{
-		id: 1,
-		name: 'V. D.',
-		experience: '6 years',
-		skills: ['Python', 'Pytorch', 'Docker', 'C++', 'SQL'],
-		commitment: ['Full-time', 'Part-time'],
-		description:
-			"Led Anduril's software platform development with deployment in active war zones.",
-		avatar: 'https://i.pravatar.cc/150?img=1',
-		education: 'B.S. in Computer Science, MIT',
-		experienceDetails: '6 years at Anduril as a Software Engineer.',
-		location: 'United States',
-		salary: '$23,881 / month',
-		start: 'Starts in 3 weeks',
-	},
-	{
-		id: 2,
-		name: 'S. L.',
-		experience: '7 years',
-		skills: [
-			'Chemical Synthesis',
-			'Spectroscopy',
-			'Chromatography',
-			'Mass Spectrometry',
-		],
-		commitment: ['Full-time', 'Part-time'],
-		description:
-			'Led MIT research in polymer films for advanced gas separation applications.',
-		avatar: 'https://i.pravatar.cc/150?img=2',
-		education: 'B.S. in Computer Science, MIT',
-		experienceDetails: '6 years at Anduril as a Software Engineer.',
-		location: 'United States',
-		salary: '$18,500 / month',
-		start: 'Starts in 2 weeks',
-	},
-]
+import { mockCandidates } from './mock'
 
 export default function JobPortal() {
 	const [search, setSearch] = useState('')
@@ -71,10 +32,6 @@ export default function JobPortal() {
 	const [selectedCandidate, setSelectedCandidate] = useState(null)
 
 	const navigate = useNavigate()
-
-	const fetchTokensQuery = useQuery({
-		queryFn: () => getCandidateLists(),
-	})
 
 	const filteredCandidates = candidatesData
 		?.filter(
@@ -89,15 +46,13 @@ export default function JobPortal() {
 		)
 
 	useEffect(() => {
-		if (fetchTokensQuery.data)
-			setCandidatesData(
-				fetchTokensQuery.data.map(candidate => ({
-					...candidate,
-					candidate: JSON.parse(candidate.JsonData),
-				}))
-			)
-	}, [fetchTokensQuery.data])
-	console.log(selectedCandidate)
+		setCandidatesData(
+			mockCandidates.map(candidate => ({
+				...candidate,
+				candidate: JSON.parse(candidate.JsonData),
+			}))
+		)
+	}, [])
 	return (
 		<Container sx={{ mt: 4 }}>
 			<Box display='flex' gap={2} mb={3}>
@@ -270,7 +225,7 @@ export default function JobPortal() {
 								{selectedCandidate.experience_section}
 							</Typography>
 						)}
-						{tab === 2 && (
+						{tab === 1 && (
 							<Typography mt={2} variant='body2'>
 								<strong>Education:</strong>{' '}
 								{selectedCandidate.education_section}

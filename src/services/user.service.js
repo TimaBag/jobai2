@@ -19,15 +19,7 @@ export const signup = async payload => {
 	return v.data
 }
 
-export const getCandidateLists = async () => {
-	try {
-		const response = await axiosBffInstance2.get('/api/candidates/lists', {
-			withCredentials: true,
-			validateStatus: status => status < 400, // Allow redirects
-		})
-		return response.data
-	} catch (error) {
-		console.error('Error fetching candidates:', error)
-		throw error
-	}
+export const getCandidateLists = async payload => {
+	const v = await axiosBffInstance2.get('/candidates/lists')
+	return v.data
 }
