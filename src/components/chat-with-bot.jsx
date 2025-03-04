@@ -12,11 +12,14 @@ export function ChatWithBot({ onComplete }) {
 
   console.log(data);
 
+  const questions = data ? [...data.join('|').split('|')] : [];
+
   const [messages, setMessages] = useState([
     {
       id: "1",
       content:
-        "Hi there! I'm the hiring assistant. I'd like to ask you a few questions about your experience and skills. Let's start: What role are you applying for?",
+        questions[0] || "Hi there! I'm the hiring assistant. I'd like to ask you a few questions about your experience and skills. Let's start: What role are you applying for?",
+        // "Mission Impact – Can you share a specific example of a challenge you faced while working on payload integration for the Europa Clipper Mission and how you resolved it?",
       sender: "bot",
       timestamp: new Date(),
     },
@@ -26,13 +29,24 @@ export function ChatWithBot({ onComplete }) {
   const [questionCount, setQuestionCount] = useState(0)
   const messagesEndRef = useRef(null)
 
-  const questions = [
-    "Great! Can you tell me about your experience with that role?",
-    "What programming languages or technologies are you most comfortable with?",
-    "Can you describe a challenging project you've worked on?",
-    "What are you looking for in your next position?",
-    "Do you have any questions about the role or our company?",
-  ]
+  // const questions = [
+  //   "Great! Can you tell me about your experience with that role?",
+  //   "What programming languages or technologies are you most comfortable with?",
+  //   "Can you describe a challenging project you've worked on?",
+  //   "What are you looking for in your next position?",
+  //   "Do you have any questions about the role or our company?",
+  // ]
+
+  // const questions = [
+    // "Mission Impact – Can you share a specific example of a challenge you faced while working on payload integration for the Europa Clipper Mission and how you resolved it?",
+    // "Leadership Experience – As a deputy lead for Blue Origin’s propulsion integrated product team, what were some key leadership strategies you employed to ensure team efficiency and project success?",
+    // "Flight Reliability & Risk Management – During your time as a Flight Reliability Engineer at SpaceX, what were the most critical risk mitigation strategies you contributed to, particularly for Falcon 9 or Falcon Heavy?",
+    // "Public Engagement & Outreach – Through your role as a NASA Solar System Ambassador, what are some of the most impactful ways you’ve engaged with the public to inspire interest in space exploration?",
+    // "Cross-Industry Expertise – Having experience across multiple space organizations (NASA JPL, SpaceX, Blue Origin, Orbital Sciences), what are the biggest differences in engineering culture and problem-solving approaches between these companies?",
+  // ]
+
+  // console.log(data.join('|').split('|'))
+  
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -63,7 +77,7 @@ export function ChatWithBot({ onComplete }) {
       // Add bot response
       const botMessage = {
         id: (Date.now() + 1).toString(),
-        content: questions[questionCount],
+        content: questions[questionCount + 1],
         sender: "bot",
         timestamp: new Date(),
       }
@@ -72,7 +86,7 @@ export function ChatWithBot({ onComplete }) {
       setQuestionCount((prevCount) => prevCount + 1)
 
       // Check if all questions have been asked
-      if (questionCount === questions.length - 1) {
+      if (questionCount === 5) {
         onComplete()
       }
     }, 1000)

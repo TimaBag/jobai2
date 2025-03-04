@@ -12,6 +12,9 @@ import EmailPreview from './pages/email-preview'
 import JobDetail from './pages/job-detail.page'
 import JobList from './pages/job-list.page'
 import JobListingPage from './pages/jobs.page'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 function App() {
 	const {
@@ -46,27 +49,29 @@ function App() {
 	}, [isAuthenticated, getAccessTokenSilently])
 	console.log(user)
 	return (
-		<Router>
-			<ToastContainer />
-			<div style={{ display: 'flex' }}>
-				<div style={{ width: '80px', height: '100vh' }}>
-					<Sidebar />
+		<QueryClientProvider client={queryClient}>
+			<Router>
+				<ToastContainer />
+				<div style={{ display: 'flex' }}>
+					<div style={{ width: '80px', height: '100vh' }}>
+						<Sidebar />
+					</div>
+					<div style={{ flex: 1 }}>
+						<Routes>
+							<Route path='/login' element={<AuthPage />} />
+							<Route path='/talents' element={<CompanyPage />} />
+							{/* <Route path='/talent' element={<TalentPage />} /> */}
+							<Route path='/company/jobs' element={<JobListingPage />} />
+							<Route path='/candidate' element={<CandidateProfileForm />} />
+							<Route path='/candidate/signup' element={<CandidateSignUp />} />
+							<Route path='/jobs' element={<JobList />} />
+							<Route path='/jobs/:id' element={<JobDetail />} />
+							<Route path='/email-preview' element={<EmailPreview />} />
+						</Routes>
+					</div>
 				</div>
-				<div style={{ flex: 1 }}>
-					<Routes>
-						<Route path='/login' element={<AuthPage />} />
-						<Route path='/talents' element={<CompanyPage />} />
-						{/* <Route path='/talent' element={<TalentPage />} /> */}
-						<Route path='/company/jobs' element={<JobListingPage />} />
-						<Route path='/candidate' element={<CandidateProfileForm />} />
-						<Route path='/candidate/signup' element={<CandidateSignUp />} />
-						<Route path='/jobs' element={<JobList />} />
-						<Route path='/jobs/:id' element={<JobDetail />} />
-						<Route path='/email-preview' element={<EmailPreview />} />
-					</Routes>
-				</div>
-			</div>
-		</Router>
+			</Router>
+		</QueryClientProvider>
 	)
 }
 
