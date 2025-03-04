@@ -1,12 +1,6 @@
-import {
-	Box,
-	Button,
-	Card,
-	CardContent,
-	Stack,
-	Typography,
-} from '@mui/material'
+import { Box, Button, Stack, Typography } from '@mui/material'
 import { useState } from 'react'
+import JobCard from '../components/job-card'
 import CreateJobModal from './create-job.modal'
 
 export default function JobListPage() {
@@ -37,18 +31,7 @@ export default function JobListPage() {
 			) : (
 				<Box display='flex' flexWrap='wrap' gap={2}>
 					{jobs.map((job, index) => (
-						<Card key={index} sx={{ width: '400px' }}>
-							<CardContent>
-								<Typography variant='h6'>{job.title}</Typography>
-								<Typography variant='body2'>{job.description}</Typography>
-								<Typography variant='subtitle2'>
-									{job.location} - {job.commitment}
-								</Typography>
-								<Typography variant='subtitle2'>
-									Rate: ${job.rate} {job.payRateFrequency}
-								</Typography>
-							</CardContent>
-						</Card>
+						<JobCard key={index} job={job} />
 					))}
 				</Box>
 			)}

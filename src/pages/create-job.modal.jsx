@@ -9,8 +9,10 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material'
+import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-
+import jobs from '../utils/jobs'
+const uniqueSkills = [...new Set(jobs.flatMap(job => job.skills))]
 export default function CreateJobModal({ open, onClose, onSubmitJob }) {
 	const { control, handleSubmit, register, reset } = useForm()
 
@@ -27,6 +29,8 @@ export default function CreateJobModal({ open, onClose, onSubmitJob }) {
 					width: 500,
 					bgcolor: 'background.paper',
 					p: 4,
+					height: '700px',
+					overflow: 'auto',
 					borderRadius: 2,
 					mx: 'auto',
 					mt: 10,
@@ -41,6 +45,14 @@ export default function CreateJobModal({ open, onClose, onSubmitJob }) {
 						fullWidth
 						label='Job Title'
 						placeholder='ex: Software Engineer'
+						margin='normal'
+						required
+					/>
+					<TextField
+						{...register('companyName')}
+						fullWidth
+						label='Company name'
+						placeholder='ex: Google'
 						margin='normal'
 						required
 					/>
@@ -87,10 +99,37 @@ export default function CreateJobModal({ open, onClose, onSubmitJob }) {
 							)}
 						/>
 					</FormControl>
+					<Controller
+						name='skills'
+						control={control}
+						defaultValue={[]}
+						rules={{ required: 'At least one skill is required' }}
+						render={({ field }) => (
+							<FormControl fullWidth>
+								<InputLabel>Select Skills</InputLabel>
+								<Select {...field} multiple label='Select Skills'>
+									{uniqueSkills.map(skill => (
+										<MenuItem key={skill} value={skill}>
+											{skill}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						)}
+					/>
 					<TextField
-						{...register('rate')}
+						{...register('salary')}
 						fullWidth
 						label='Rate'
+						type='number'
+						margin='normal'
+						defaultValue={0}
+						required
+					/>
+					<TextField
+						{...register('workHours')}
+						fullWidth
+						label='Work hours'
 						type='number'
 						margin='normal'
 						defaultValue={0}

@@ -1,16 +1,17 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import React, { useEffect } from 'react'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Sidebar from './components/sidebar.component'
 import AuthPage from './pages/auth.page'
 import CandidateSignUp from './pages/candidate-signup.page'
 import CandidateProfileForm from './pages/candidate.page'
 import CompanyPage from './pages/company.page'
+import EmailPreview from './pages/email-preview'
 import JobDetail from './pages/job-detail.page'
 import JobList from './pages/job-list.page'
 import JobListingPage from './pages/jobs.page'
-import TalentPage from './pages/talent.page'
-import EmailPreview from './pages/email-preview'
 
 function App() {
 	const {
@@ -22,10 +23,10 @@ function App() {
 		user,
 	} = useAuth0()
 	if (isLoading) return <div>Loading...</div>
-	if (!isAuthenticated) {
-		loginWithRedirect()
-		return null
-	}
+	// if (!isAuthenticated) {
+	// 	loginWithRedirect()
+	// 	return null
+	// }
 	if (error) return <div>Error: {error.message}</div>
 
 	useEffect(() => {
@@ -46,6 +47,7 @@ function App() {
 	console.log(user)
 	return (
 		<Router>
+			<ToastContainer />
 			<div style={{ display: 'flex' }}>
 				<div style={{ width: '80px', height: '100vh' }}>
 					<Sidebar />
