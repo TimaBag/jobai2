@@ -20,6 +20,6 @@ export const signup = async payload => {
 }
 
 export const getCandidateLists = async payload => {
-	const v = await axiosBffInstance2.get('/candidates/lists')
+	const v = await axiosBffInstance2.get('/employee/lists/')
 	return v.data
 }

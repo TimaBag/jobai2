@@ -43,7 +43,7 @@ export default function JobPortal() {
 			setCandidatesData(
 				fetchTokensQuery.data.map(candidate => ({
 					...candidate,
-					candidate: JSON.parse(candidate.JsonData),
+					candidate: candidate,
 				}))
 			)
 	}, [fetchTokensQuery.data])
@@ -74,7 +74,7 @@ export default function JobPortal() {
 											{candidate.candidate.name} | Exp: 6 years
 										</Typography>
 										<Typography variant='body2' color='text.secondary'>
-											{candidate.candidate.about_section.substring(0, 100)}...
+											{candidate.candidate.about.substring(0, 100)}...
 										</Typography>
 									</Box>
 								</Box>
@@ -83,17 +83,14 @@ export default function JobPortal() {
 										Expert in
 									</Typography>
 									<Box mt={1} display='flex' gap={1} flexWrap='wrap'>
-										{candidate.candidate.skills_section
-											.split('\n')
-											.slice(1, 5)
-											.map(skill => (
-												<Chip
-													key={skill}
-													label={skill}
-													variant='outlined'
-													sx={{ mr: 1, mb: 1 }}
-												/>
-											))}
+										{candidate.candidate.experience.map(skill => (
+											<Chip
+												key={skill.company}
+												label={`${skill.company} - ${skill.position}`}
+												variant='outlined'
+												sx={{ mr: 1, mb: 1 }}
+											/>
+										))}
 									</Box>
 								</Box>
 								<Box
@@ -106,17 +103,14 @@ export default function JobPortal() {
 										<Typography variant='body2' fontWeight={500} mb={2}>
 											Languages
 										</Typography>
-										{candidate.candidate.languages_section
-											.split('\n')
-											.slice(1, 3)
-											.map(c => (
-												<Chip
-													key={c}
-													label={c}
-													variant='outlined'
-													sx={{ mr: 1, mb: 1 }}
-												/>
-											))}
+										{candidate.candidate.languages.map(c => (
+											<Chip
+												key={c.language}
+												label={c.language}
+												variant='outlined'
+												sx={{ mr: 1, mb: 1 }}
+											/>
+										))}
 									</Box>
 								</Box>
 								<Stack direction='row' justifyContent='space-between' mt={2}>
@@ -169,23 +163,17 @@ export default function JobPortal() {
 							/>
 							<Box>
 								<Typography variant='h5'>{selectedCandidate.name}</Typography>
-								<Typography variant='body2' color='text.secondary'>
-									{selectedCandidate.experience} Experience
-								</Typography>
 							</Box>
 						</Box>
 						<Typography mt={2} variant='body2'>
 							<strong>Languages:</strong>{' '}
-							{selectedCandidate.languages_section
-								.split('\n')
-								.slice(1, 7)
-								.join(', ')}
+							{selectedCandidate.languages.map(lan => lan.language).join(', ')}
 						</Typography>
 						<Typography variant='body2'>
-							<strong>Salary:</strong> {selectedCandidate.salary}
+							<strong>Salary:</strong> {selectedCandidate?.salary}
 						</Typography>
 						<Typography variant='body2'>
-							<strong>Location:</strong> {selectedCandidate.location}
+							<strong>Location:</strong> {selectedCandidate?.location}
 						</Typography>
 						<Typography variant='body2'>
 							<strong>Start Date:</strong> {selectedCandidate.start}
@@ -194,12 +182,9 @@ export default function JobPortal() {
 							<strong>Expert in:</strong>
 						</Typography>
 						<Box mt={1} mb={2} display='flex' gap={1} flexWrap='wrap'>
-							{selectedCandidate.skills_section
-								.split('\n')
-								.slice(1, 7)
-								.map(skill => (
-									<Chip key={skill} label={skill} variant='outlined' />
-								))}
+							{selectedCandidate.skills.map(skill => (
+								<Chip key={skill} label={skill} variant='outlined' />
+							))}
 						</Box>
 						<Tabs value={tab} onChange={(e, newValue) => setTab(newValue)}>
 							<Tab label='About' />
@@ -208,19 +193,30 @@ export default function JobPortal() {
 						</Tabs>
 						{tab === 0 && (
 							<Typography mt={2} variant='body2'>
-								<strong>About:</strong> {selectedCandidate.about_section}
+								<strong>About:</strong> {selectedCandidate.about}
 							</Typography>
 						)}
 						{tab === 1 && (
 							<Typography mt={2} variant='body2'>
 								<strong>Experience:</strong>{' '}
-								{selectedCandidate.experience_section}
+								{selectedCandidate.experience.map(exp => (
+									<Box display='flex' flexDirection='column'>
+										<Typography variant='body2'>
+											<strong>{exp.company}:</strong> {exp.position}
+										</Typography>
+										<Typography>{exp.duration}</Typography>
+									</Box>
+								))}
 							</Typography>
 						)}
-						{tab === 1 && (
+						{tab === 2 && (
 							<Typography mt={2} variant='body2'>
-								<strong>Education:</strong>{' '}
-								{selectedCandidate.education_section}
+								<strong>Education:</strong>
+								{selectedCandidate.education.map(exp => (
+									<Typography variant='body2'>
+										<strong>{exp.institution}:</strong> {exp.degree}
+									</Typography>
+								))}
 							</Typography>
 						)}
 					</Box>
