@@ -21,10 +21,10 @@ function App() {
 		user,
 	} = useAuth0()
 	if (isLoading) return <div>Loading...</div>
-	if (!isAuthenticated) {
-		loginWithRedirect()
-		return null
-	}
+	// if (!isAuthenticated) {
+	// 	loginWithRedirect()
+	// 	return null
+	// }
 	if (error) return <div>Error: {error.message}</div>
 
 	useEffect(() => {

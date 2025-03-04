@@ -97,7 +97,7 @@ export default function JobPortal() {
 				}))
 			)
 	}, [fetchTokensQuery.data])
-	console.log(candidatesData)
+	console.log(selectedCandidate)
 	return (
 		<Container sx={{ mt: 4 }}>
 			<Box display='flex' gap={2} mb={3}>
@@ -160,7 +160,7 @@ export default function JobPortal() {
 								>
 									<Box>
 										<Typography variant='body2' fontWeight={500}>
-											Commitment
+											Languages
 										</Typography>
 										{candidate.candidate.languages_section
 											.split('\n')
@@ -228,8 +228,11 @@ export default function JobPortal() {
 							</Box>
 						</Box>
 						<Typography mt={2} variant='body2'>
-							<strong>Commitment:</strong>{' '}
-							{selectedCandidate.commitment.join(', ')}
+							<strong>Languages:</strong>{' '}
+							{selectedCandidate.languages_section
+								.split('\n')
+								.slice(1, 7)
+								.join(', ')}
 						</Typography>
 						<Typography variant='body2'>
 							<strong>Salary:</strong> {selectedCandidate.salary}
@@ -244,23 +247,33 @@ export default function JobPortal() {
 							<strong>Expert in:</strong>
 						</Typography>
 						<Box mt={1} mb={2} display='flex' gap={1} flexWrap='wrap'>
-							{selectedCandidate.skills.map(skill => (
-								<Chip key={skill} label={skill} variant='outlined' />
-							))}
+							{selectedCandidate.skills_section
+								.split('\n')
+								.slice(1, 7)
+								.map(skill => (
+									<Chip key={skill} label={skill} variant='outlined' />
+								))}
 						</Box>
 						<Tabs value={tab} onChange={(e, newValue) => setTab(newValue)}>
+							<Tab label='About' />
 							<Tab label='Experience' />
 							<Tab label='Education' />
 						</Tabs>
 						{tab === 0 && (
 							<Typography mt={2} variant='body2'>
-								<strong>Experience:</strong>{' '}
-								{selectedCandidate.experienceDetails}
+								<strong>About:</strong> {selectedCandidate.about_section}
 							</Typography>
 						)}
 						{tab === 1 && (
 							<Typography mt={2} variant='body2'>
-								<strong>Education:</strong> {selectedCandidate.education}
+								<strong>Experience:</strong>{' '}
+								{selectedCandidate.experience_section}
+							</Typography>
+						)}
+						{tab === 2 && (
+							<Typography mt={2} variant='body2'>
+								<strong>Education:</strong>{' '}
+								{selectedCandidate.education_section}
 							</Typography>
 						)}
 					</Box>
