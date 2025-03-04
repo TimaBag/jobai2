@@ -14,12 +14,14 @@ import {
 	InputLabel,
 	MenuItem,
 	Select,
+	Stack,
 	Tab,
 	Tabs,
 	TextField,
 	Typography,
 } from '@mui/material'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const mockCandidates = [
 	{
@@ -64,6 +66,8 @@ export default function JobPortal() {
 	const [filter, setFilter] = useState('')
 	const [tab, setTab] = useState(0)
 	const [selectedCandidate, setSelectedCandidate] = useState(null)
+
+	const navigate = useNavigate()
 
 	const filteredCandidates = mockCandidates
 		.filter(
@@ -145,12 +149,23 @@ export default function JobPortal() {
 											/>
 										))}
 									</Box>
-									<Button
-										variant='contained'
-										onClick={() => setSelectedCandidate(candidate)}
-									>
-										View Profile
-									</Button>
+									<Stack gap={1}>
+										<Button
+											variant='contained'
+											size='small'
+											onClick={() => setSelectedCandidate(candidate)}
+										>
+											View Profile
+										</Button>
+										<Button
+											variant='contained'
+											color="secondary"
+											size='small'
+											onClick={() => navigate('/email-preview', { state: { name: candidate.name } })}
+										>
+											Reach out
+										</Button>
+									</Stack>
 								</Box>
 							</CardContent>
 						</Card>

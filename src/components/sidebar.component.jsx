@@ -15,17 +15,20 @@ import {
 	ListItemText,
 } from '@mui/material'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 
 const menuItems = [
-	{ text: 'Search', icon: <SearchIcon /> },
-	{ text: 'Jobs', icon: <WorkIcon /> },
-	{ text: 'Team', icon: <GroupIcon /> },
-	{ text: 'Spend', icon: <AccountBalanceWalletIcon /> },
-	{ text: 'Settings', icon: <SettingsIcon /> },
+	{ text: 'Search', icon: <SearchIcon />, url: '/' },
+	{ text: 'Search Jobs', icon: <WorkIcon />, url: '/jobs' },
+	{ text: 'Search Talents', icon: <GroupIcon />, url: '/talents' },
+	// { text: 'Spend', icon: <AccountBalanceWalletIcon /> },
+	{ text: 'Settings', icon: <SettingsIcon />, url: '/' },
 ]
 
 export default function Sidebar() {
 	const [selectedIndex, setSelectedIndex] = useState(1)
+	const navigate = useNavigate()
 
 	return (
 		<Drawer
@@ -52,7 +55,10 @@ export default function Sidebar() {
 					<ListItem key={item.text} disablePadding>
 						<ListItemButton
 							selected={selectedIndex === index}
-							onClick={() => setSelectedIndex(index)}
+							onClick={() => {
+								setSelectedIndex(index)
+								navigate(item.url)
+							}}
 							sx={{
 								display: 'flex',
 								flexDirection: 'column',
