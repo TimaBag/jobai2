@@ -1,4 +1,3 @@
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import GroupIcon from '@mui/icons-material/Group'
 import SearchIcon from '@mui/icons-material/Search'
@@ -16,7 +15,6 @@ import {
 } from '@mui/material'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { createBrowserRouter } from 'react-router-dom'
 
 const menuItems = [
 	{ text: 'Search', icon: <SearchIcon />, url: '/' },
@@ -83,7 +81,15 @@ export default function Sidebar() {
 			</List>
 
 			{/* Bottom Icons */}
-			<Box mb={2}>
+			<Box
+				mb={2}
+				sx={{
+					width: '100%',
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+				}}
+			>
 				<CalendarTodayIcon sx={{ mb: 2, cursor: 'pointer' }} />
 				<Avatar sx={{ cursor: 'pointer' }} />
 			</Box>

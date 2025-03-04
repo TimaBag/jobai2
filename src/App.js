@@ -6,11 +6,10 @@ import AuthPage from './pages/auth.page'
 import CandidateSignUp from './pages/candidate-signup.page'
 import CandidateProfileForm from './pages/candidate.page'
 import CompanyPage from './pages/company.page'
+import EmailPreview from './pages/email-preview'
 import JobDetail from './pages/job-detail.page'
 import JobList from './pages/job-list.page'
 import JobListingPage from './pages/jobs.page'
-import TalentPage from './pages/talent.page'
-import EmailPreview from './pages/email-preview'
 
 function App() {
 	const {
@@ -22,10 +21,10 @@ function App() {
 		user,
 	} = useAuth0()
 	if (isLoading) return <div>Loading...</div>
-	if (!isAuthenticated) {
-		loginWithRedirect()
-		return null
-	}
+	// if (!isAuthenticated) {
+	// 	loginWithRedirect()
+	// 	return null
+	// }
 	if (error) return <div>Error: {error.message}</div>
 
 	useEffect(() => {
