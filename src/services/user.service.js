@@ -1,11 +1,10 @@
 import axios from 'axios'
-import { axiosBffInstance } from './auth.service'
 
-export const axiosBffInstance = axios.create({
+export const axiosBffInstance2 = axios.create({
 	baseURL: 'https://hackathon-ai-outreach-production.up.railway.app/',
 	withCredentials: true,
 })
-axiosBffInstance.interceptors.request.use(
+axiosBffInstance2.interceptors.request.use(
 	config => {
 		const token = localStorage.getItem('ACCESS_TOKEN') // Retrieve the token
 		if (token) {
@@ -16,6 +15,11 @@ axiosBffInstance.interceptors.request.use(
 	error => Promise.reject(error)
 )
 export const signup = async payload => {
-	const v = await axiosBffInstance.post('/users', payload)
+	const v = await axiosBffInstance2.post('/users', payload)
+	return v.data
+}
+
+export const getCandidateLists = async payload => {
+	const v = await axiosBffInstance2.get('/candidates/lists', payload)
 	return v.data
 }
