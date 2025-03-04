@@ -1,4 +1,3 @@
-import { useAuth0 } from '@auth0/auth0-react'
 import {
 	Box,
 	Button,
@@ -7,19 +6,12 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function AuthPage() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const { loginWithRedirect, isAuthenticated } = useAuth0()
-
-	useEffect(() => {
-		if (!isAuthenticated) {
-			loginWithRedirect()
-		}
-	}, [])
 
 	const handleSubmit = e => {
 		e.preventDefault()
