@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react'
 import {
 	Box,
 	Button,
@@ -10,6 +11,8 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function AuthPage() {
+	const { loginWithRedirect, isLoading, isAuthenticated, error, user } =
+		useAuth0()
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
@@ -66,9 +69,9 @@ export default function AuthPage() {
 						onChange={e => setPassword(e.target.value)}
 					/>
 					<Button
-						type='submit'
 						variant='contained'
 						size='large'
+						onClick={loginWithRedirect}
 						sx={{ mt: 2, borderRadius: 2 }}
 					>
 						Login
