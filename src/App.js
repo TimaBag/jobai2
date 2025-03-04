@@ -1,6 +1,8 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import React, { useEffect } from 'react'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Sidebar from './components/sidebar.component'
 import AuthPage from './pages/auth.page'
 import CandidateSignUp from './pages/candidate-signup.page'
@@ -45,6 +47,7 @@ function App() {
 	console.log(user)
 	return (
 		<Router>
+			<ToastContainer />
 			<div style={{ display: 'flex' }}>
 				<div style={{ width: '80px', height: '100vh' }}>
 					<Sidebar />

@@ -20,8 +20,9 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 // Mock candidate data - in a real app, this would come from your backend
 const candidateData = {
@@ -37,12 +38,13 @@ const candidateData = {
 
 // Mock recruiter data
 const recruiterData = {
-	name: 'David Paffenholz',
-	email: 'david@juicebox.work',
+	name: 'Timur Adilzhanov',
+	email: 'timur@remofirst.com',
 	company: 'Juicebox',
 }
 
 const EmailPreview = () => {
+	const form = useRef()
 	const [subject, setSubject] = useState('Software Engineer Opportunity')
 	const [emailBody, setEmailBody] = useState('')
 	const [selectedCandidate] = useState('Martin Lagrange')
@@ -50,7 +52,7 @@ const EmailPreview = () => {
 	const [selectedTimeframe, setSelectedTimeframe] = useState('immediately')
 
 	const location = useLocation()
-	const { name } = location.state || {}
+	const { name, message } = location.state || {}
 
 	console.log('name', name)
 
@@ -60,14 +62,7 @@ const EmailPreview = () => {
 
 		// Simulate API call delay
 		setTimeout(() => {
-			const generatedEmail = `Hi ${name},
-
-I noticed your experience at ${candidateData.currentCompany} and would look to invite you to apply to a SWE role here at ${recruiterData.company}.
-
-Your comprehensive background from ${candidateData.currentCompany} to ${candidateData.previousCompany}, showcasing skills in ${candidateData.skills[0]}, leading projects, and enhancing user experiences, aligns perfectly with the innovative work we do at ${recruiterData.company}.
-
-Best,
-${recruiterData.name}`
+			const generatedEmail = message
 
 			setEmailBody(generatedEmail)
 			setIsGenerating(false)
@@ -81,13 +76,13 @@ ${recruiterData.name}`
 		}
 
 		try {
-			await emailjs.send(
+			await emailjs.sendForm(
 				'service_gr7sxdr',
 				'template_tlzzvdn',
-				templateParams,
+				form.current,
 				'hZftqoIprzudCWPgd'
 			)
-			console.log('Email sent successfully!')
+			toast.success('Email sent successfully!')
 		} catch (error) {
 			console.error('Email sending error:', error)
 		}
@@ -357,6 +352,10 @@ ${recruiterData.name}`
 					</Box>
 				</Grid>
 			</Grid>
+			<form ref={form}>
+				<input type='hidden' name='to_email' value='timur@remofirst.com' />
+				<input type='hidden' name='message' value={emailBody} />
+			</form>
 		</Box>
 	)
 }

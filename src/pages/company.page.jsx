@@ -8,12 +8,8 @@ import {
 	Chip,
 	Container,
 	Drawer,
-	FormControl,
 	Grid,
 	IconButton,
-	InputLabel,
-	MenuItem,
-	Select,
 	Stack,
 	Tab,
 	Tabs,
@@ -38,17 +34,9 @@ export default function JobPortal() {
 		queryFn: () => getCandidateLists(),
 	})
 
-	const filteredCandidates = candidatesData
-		?.filter(
-			candidate =>
-				candidate.candidate.name.toLowerCase().includes(search.toLowerCase()) ||
-				candidate.candidate.skills.some(skill =>
-					skill.toLowerCase().includes(search.toLowerCase())
-				)
-		)
-		.filter(candidate =>
-			filter ? candidate.candidate.skills.includes(filter) : true
-		)
+	const filteredCandidates = candidatesData?.filter(candidate =>
+		candidate.candidate.name.toLowerCase().includes(search.toLowerCase())
+	)
 
 	useEffect(() => {
 		if (fetchTokensQuery.data)
@@ -70,22 +58,11 @@ export default function JobPortal() {
 					value={search}
 					onChange={e => setSearch(e.target.value)}
 				/>
-				<FormControl sx={{ minWidth: 200 }}>
-					<InputLabel>Filter by Skill</InputLabel>
-					<Select value={filter} onChange={e => setFilter(e.target.value)}>
-						<MenuItem value=''>All</MenuItem>
-						{[...new Set(candidatesData?.flatMap(c => c.skills))].map(skill => (
-							<MenuItem key={skill} value={skill}>
-								{skill}
-							</MenuItem>
-						))}
-					</Select>
-				</FormControl>
 			</Box>
 			<Grid container spacing={2}>
 				{filteredCandidates?.map(candidate => (
 					<Grid item xs={12} sm={6} md={4} key={candidate.candidate.id}>
-						<Card sx={{ p: 2, borderRadius: 3, boxShadow: 2, minHeight: 420 }}>
+						<Card sx={{ p: 2, borderRadius: 3, boxShadow: 2, minHeight: 500 }}>
 							<CardContent>
 								<Box display='flex' alignItems='center' gap={2}>
 									<Avatar
@@ -102,7 +79,7 @@ export default function JobPortal() {
 									</Box>
 								</Box>
 								<Box mt={2}>
-									<Typography variant='body2' fontWeight={500}>
+									<Typography variant='body2' fontWeight={500} mb={2}>
 										Expert in
 									</Typography>
 									<Box mt={1} display='flex' gap={1} flexWrap='wrap'>
@@ -110,7 +87,12 @@ export default function JobPortal() {
 											.split('\n')
 											.slice(1, 5)
 											.map(skill => (
-												<Chip key={skill} label={skill} variant='outlined' />
+												<Chip
+													key={skill}
+													label={skill}
+													variant='outlined'
+													sx={{ mr: 1, mb: 1 }}
+												/>
 											))}
 									</Box>
 								</Box>
@@ -121,7 +103,7 @@ export default function JobPortal() {
 									alignItems='center'
 								>
 									<Box>
-										<Typography variant='body2' fontWeight={500}>
+										<Typography variant='body2' fontWeight={500} mb={2}>
 											Languages
 										</Typography>
 										{candidate.candidate.languages_section
@@ -132,32 +114,35 @@ export default function JobPortal() {
 													key={c}
 													label={c}
 													variant='outlined'
-													sx={{ mr: 1 }}
+													sx={{ mr: 1, mb: 1 }}
 												/>
 											))}
 									</Box>
-									<Stack gap={1}>
-										<Button
-											variant='contained'
-											size='small'
-											onClick={() => setSelectedCandidate(candidate.candidate)}
-										>
-											View Profile
-										</Button>
-										<Button
-											variant='contained'
-											color='secondary'
-											size='small'
-											onClick={() =>
-												navigate('/email-preview', {
-													state: { name: candidate.candidate.name },
-												})
-											}
-										>
-											Reach out
-										</Button>
-									</Stack>
 								</Box>
+								<Stack direction='row' justifyContent='space-between' mt={2}>
+									<Button
+										variant='contained'
+										size='small'
+										onClick={() => setSelectedCandidate(candidate.candidate)}
+									>
+										View Profile
+									</Button>
+									<Button
+										variant='contained'
+										color='secondary'
+										size='small'
+										onClick={() =>
+											navigate('/email-preview', {
+												state: {
+													name: candidate.candidate.name,
+													message: candidate.WelcomeMessage,
+												},
+											})
+										}
+									>
+										Reach out
+									</Button>
+								</Stack>
 							</CardContent>
 						</Card>
 					</Grid>
