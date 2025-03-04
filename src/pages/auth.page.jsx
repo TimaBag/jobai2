@@ -23,10 +23,10 @@ export default function AuthPage() {
 	} = useForm()
 
 	// Redirect user if already logged in
-	if (isAuthenticated) {
-		window.location.href = '/company' // Change to your protected route
-		return null
-	}
+	// if (isAuthenticated) {
+	// 	window.location.href = '/company' // Change to your protected route
+	// 	return null
+	// }
 
 	const onSubmit = data => {
 		console.log(data)
