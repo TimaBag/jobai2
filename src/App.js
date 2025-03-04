@@ -12,8 +12,14 @@ import JobListingPage from './pages/jobs.page'
 import TalentPage from './pages/talent.page'
 
 function App() {
-	const { loginWithRedirect, isLoading, isAuthenticated, error, user } =
-		useAuth0()
+	const {
+		loginWithRedirect,
+		isLoading,
+		isAuthenticated,
+		error,
+		getAccessTokenSilently,
+		user,
+	} = useAuth0()
 	if (isLoading) return <div>Loading...</div>
 	if (!isAuthenticated) {
 		loginWithRedirect()
@@ -36,7 +42,7 @@ function App() {
 
 		fetchToken()
 	}, [isAuthenticated, getAccessTokenSilently])
-
+	console.log(user)
 	return (
 		<div style={{ display: 'flex' }}>
 			<div style={{ width: '80px', height: '100vh' }}>
