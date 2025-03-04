@@ -20,9 +20,10 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { mockCandidates } from './mock'
+import { getCandidateLists } from '../services/user.service'
 
 export default function JobPortal() {
 	const [search, setSearch] = useState('')
@@ -32,6 +33,10 @@ export default function JobPortal() {
 	const [selectedCandidate, setSelectedCandidate] = useState(null)
 
 	const navigate = useNavigate()
+
+	const fetchTokensQuery = useQuery({
+		queryFn: () => getCandidateLists(),
+	})
 
 	const filteredCandidates = candidatesData
 		?.filter(
@@ -46,13 +51,15 @@ export default function JobPortal() {
 		)
 
 	useEffect(() => {
-		setCandidatesData(
-			mockCandidates.map(candidate => ({
-				...candidate,
-				candidate: JSON.parse(candidate.JsonData),
-			}))
-		)
-	}, [])
+		if (fetchTokensQuery.data)
+			setCandidatesData(
+				fetchTokensQuery.data.map(candidate => ({
+					...candidate,
+					candidate: JSON.parse(candidate.JsonData),
+				}))
+			)
+	}, [fetchTokensQuery.data])
+	console.log(selectedCandidate)
 	return (
 		<Container sx={{ mt: 4 }}>
 			<Box display='flex' gap={2} mb={3}>
