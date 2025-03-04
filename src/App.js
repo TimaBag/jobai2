@@ -16,10 +16,7 @@ function App() {
 		useAuth0()
 	const queryParams = new URLSearchParams(location.search)
 	const authCode = queryParams.get('code')
-	console.log(user)
-	console.log(isAuthenticated)
-	console.log(error)
-	// if (!isAuthenticated) return <div>{loginWithRedirect()}</div>
+	if (!isAuthenticated) return <div>{loginWithRedirect()}</div>
 	if (isLoading) return <div>Loading...</div>
 	if (error) return <div>Error: {error.message}</div>
 
