@@ -1,21 +1,35 @@
+import { useAuth0 } from '@auth0/auth0-react'
 import {
 	Box,
 	Button,
 	Container,
+	FormControl,
+	InputLabel,
+	MenuItem,
 	Paper,
+	Select,
 	TextField,
 	Typography,
 } from '@mui/material'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react'
+import { Controller, useForm } from 'react-hook-form'
 
 export default function AuthPage() {
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
+	const { isLoading, isAuthenticated, error } = useAuth0()
+	const {
+		handleSubmit,
+		control,
+		formState: { errors },
+	} = useForm()
 
-	const handleSubmit = e => {
-		e.preventDefault()
-		console.log('Logging in with:', { email, password })
+	// Redirect user if already logged in
+	// if (isAuthenticated) {
+	// 	window.location.href = '/company' // Change to your protected route
+	// 	return null
+	// }
+
+	const onSubmit = data => {
+		console.log(data)
 	}
 
 	return (
@@ -38,51 +52,62 @@ export default function AuthPage() {
 				}}
 			>
 				<Typography variant='h4' gutterBottom>
-					Welcome Back
+					Sign up
 				</Typography>
-				<Typography variant='body1' color='text.secondary' mb={2}>
-					Sign in to continue
-				</Typography>
+
 				<Box
 					component='form'
-					onSubmit={handleSubmit}
+					onSubmit={handleSubmit(onSubmit)}
 					sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
 				>
-					<TextField
-						label='Email'
-						variant='outlined'
-						fullWidth
-						required
-						value={email}
-						onChange={e => setEmail(e.target.value)}
+					{/* Email Field */}
+					<Controller
+						name='email'
+						control={control}
+						rules={{ required: 'Email is required' }}
+						render={({ field }) => (
+							<TextField
+								{...field}
+								label='Email'
+								variant='outlined'
+								fullWidth
+								required
+								error={!!errors.email}
+								helperText={errors.email?.message}
+							/>
+						)}
 					/>
-					<TextField
-						label='Password'
-						type='password'
-						variant='outlined'
-						fullWidth
-						required
-						value={password}
-						onChange={e => setPassword(e.target.value)}
-					/>
+
+					{/* Role Selection */}
+					<FormControl fullWidth>
+						<InputLabel>Role</InputLabel>
+						<Controller
+							name='role'
+							control={control}
+							rules={{ required: 'Role is required' }}
+							render={({ field }) => (
+								<Select {...field} label='Role'>
+									<MenuItem value='user'>User</MenuItem>
+									<MenuItem value='admin'>Admin</MenuItem>
+								</Select>
+							)}
+						/>
+						<Typography color='error' variant='body2'>
+							{errors.role?.message}
+						</Typography>
+					</FormControl>
+
+					{/* Login Button */}
 					<Button
 						type='submit'
 						variant='contained'
 						size='large'
 						sx={{ mt: 2, borderRadius: 2 }}
+						disabled={isLoading}
 					>
-						Login
+						{isLoading ? 'Loading...' : 'Sign Up'}
 					</Button>
 				</Box>
-				<Typography variant='body2' mt={2}>
-					Don't have an account?{' '}
-					<Link
-						to='/signup'
-						style={{ textDecoration: 'none', color: '#1976d2' }}
-					>
-						Sign Up
-					</Link>
-				</Typography>
 			</Paper>
 		</Container>
 	)

@@ -13,16 +13,37 @@ import TalentPage from './pages/talent.page'
 import EmailPreview from './pages/email-preview'
 
 function App() {
-	const { loginWithRedirect, isAuthenticated, user } = useAuth0()
+	const {
+		loginWithRedirect,
+		isLoading,
+		isAuthenticated,
+		error,
+		getAccessTokenSilently,
+		user,
+	} = useAuth0()
+	if (isLoading) return <div>Loading...</div>
+	if (!isAuthenticated) {
+		loginWithRedirect()
+		return null
+	}
+	if (error) return <div>Error: {error.message}</div>
 
 	useEffect(() => {
-		console.log(isAuthenticated)
-		console.log(user)
-		// if (!isAuthenticated) {
-		// 	loginWithRedirect()
-		// }
-	}, [])
+		const fetchToken = async () => {
+			if (isAuthenticated) {
+				try {
+					const token = await getAccessTokenSilently()
+					localStorage.setItem('accessToken', token)
+					console.log('Access Token:', token)
+				} catch (error) {
+					console.error('Error getting token:', error)
+				}
+			}
+		}
 
+		fetchToken()
+	}, [isAuthenticated, getAccessTokenSilently])
+	console.log(user)
 	return (
 		<Router>
 			<div style={{ display: 'flex' }}>
