@@ -2,7 +2,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 
 export const axiosBffInstance = axios.create({
-	baseURL: 'https://hackathon-ai-outreach.uk.auth0.com/api/v2/',
+	baseURL: 'https://hackathon-ai-outreach.uk.auth0.com/',
 	withCredentials: true,
 })
 
@@ -35,8 +35,15 @@ axiosBffInstance.interceptors.response.use(
 	}
 )
 
-export const fetchUserTokens = async () => {
-	const v = await axiosBffInstance.get('/auth/token')
+export const fetchUserTokens = async code => {
+	const v = await axiosBffInstance.post('/oauth/token', {
+		grant_type: 'authorization_code',
+		client_id: 'gmMVyY0jdaEWSqqQSLe6WSqlSQ0ndxJT',
+		client_secret:
+			'VD6HvOUnsyFs_GHJcIcQnn7DnMGUl61X9OaB8NiK_X7hCrN-vYcVS90mdbZyrhXd',
+		code,
+		redirect_uri: 'https://jobai-qxn2.vercel.app/login',
+	})
 	return v.data
 }
 
@@ -71,6 +78,11 @@ export const unlinkUserAccount = async account_uuid => {
 }
 
 export const resetUserPassword = async payload => {
+	const v = await axiosBffInstance.post('/auth/reset-password/', payload)
+	return v.data
+}
+
+export const postAuthToken = async payload => {
 	const v = await axiosBffInstance.post('/auth/reset-password/', payload)
 	return v.data
 }

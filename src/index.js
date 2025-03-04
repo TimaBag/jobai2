@@ -2,6 +2,7 @@ import { Auth0Provider } from '@auth0/auth0-react'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import App from './App'
 import './index.css'
 import reportWebVitals from './reportWebVitals'
@@ -10,18 +11,21 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 
 const domain = 'hackathon-ai-outreach.uk.auth0.com'
 const clientId = 'gmMVyY0jdaEWSqqQSLe6WSqlSQ0ndxJT'
+const queryClient = new QueryClient()
 
 root.render(
 	<React.StrictMode>
-		<Auth0Provider
-			domain={domain}
-			clientId={clientId}
-			authorizationParams={{
-				redirect_uri: 'https://jobai-qxn2.vercel.app/login',
-			}}
-		>
-			<App />
-		</Auth0Provider>
+		<QueryClientProvider client={queryClient}>
+			<Auth0Provider
+				domain={domain}
+				clientId={clientId}
+				authorizationParams={{
+					redirect_uri: 'https://jobai-qxn2.vercel.app/login',
+				}}
+			>
+				<App />
+			</Auth0Provider>
+		</QueryClientProvider>
 	</React.StrictMode>
 )
 
