@@ -14,10 +14,11 @@ import TalentPage from './pages/talent.page'
 function App() {
 	const { loginWithRedirect, isLoading, isAuthenticated, error, user } =
 		useAuth0()
-	const queryParams = new URLSearchParams(location.search)
-	const authCode = queryParams.get('code')
-	if (!isAuthenticated) return <div>{loginWithRedirect()}</div>
 	if (isLoading) return <div>Loading...</div>
+	if (!isAuthenticated) {
+		loginWithRedirect()
+		return null
+	}
 	if (error) return <div>Error: {error.message}</div>
 
 	return (
