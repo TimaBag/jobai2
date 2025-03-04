@@ -22,6 +22,7 @@ root.render(
 				authorizationParams={{
 					redirect_uri: 'https://jobai-qxn2.vercel.app/company',
 				}}
+				cacheLocation='localstorage'
 			>
 				<App />
 			</Auth0Provider>
