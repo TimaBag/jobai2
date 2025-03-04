@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import Sidebar from './components/sidebar.component'
 import AuthPage from './pages/auth.page'
@@ -20,6 +20,22 @@ function App() {
 		return null
 	}
 	if (error) return <div>Error: {error.message}</div>
+
+	useEffect(() => {
+		const fetchToken = async () => {
+			if (isAuthenticated) {
+				try {
+					const token = await getAccessTokenSilently()
+					localStorage.setItem('accessToken', token)
+					console.log('Access Token:', token)
+				} catch (error) {
+					console.error('Error getting token:', error)
+				}
+			}
+		}
+
+		fetchToken()
+	}, [isAuthenticated, getAccessTokenSilently])
 
 	return (
 		<div style={{ display: 'flex' }}>

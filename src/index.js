@@ -20,7 +20,7 @@ root.render(
 				domain={domain}
 				clientId={clientId}
 				authorizationParams={{
-					redirect_uri: 'https://jobai-qxn2.vercel.app/login',
+					redirect_uri: 'https://jobai-qxn2.vercel.app/company',
 				}}
 			>
 				<App />
