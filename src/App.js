@@ -1,4 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React, { useEffect } from 'react'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
@@ -12,9 +13,8 @@ import EmailPreview from './pages/email-preview'
 import JobDetail from './pages/job-detail.page'
 import JobList from './pages/job-list.page'
 import JobListingPage from './pages/jobs.page'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 function App() {
 	const {
@@ -26,10 +26,10 @@ function App() {
 		user,
 	} = useAuth0()
 	if (isLoading) return <div>Loading...</div>
-	// if (!isAuthenticated) {
-	// 	loginWithRedirect()
-	// 	return null
-	// }
+	if (!isAuthenticated) {
+		loginWithRedirect()
+		return null
+	}
 	if (error) return <div>Error: {error.message}</div>
 
 	useEffect(() => {
