@@ -1,11 +1,8 @@
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import GroupIcon from '@mui/icons-material/Group'
-import SearchIcon from '@mui/icons-material/Search'
 import SettingsIcon from '@mui/icons-material/Settings'
 import WorkIcon from '@mui/icons-material/Work'
 import {
 	Avatar,
-	Box,
 	Drawer,
 	List,
 	ListItem,
@@ -17,11 +14,10 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const menuItems = [
-	{ text: 'Search', icon: <SearchIcon />, url: '/' },
 	{ text: 'Search Jobs', icon: <WorkIcon />, url: '/jobs' },
 	{ text: 'Search Talents', icon: <GroupIcon />, url: '/talents' },
-	// { text: 'Spend', icon: <AccountBalanceWalletIcon /> },
-	{ text: 'Settings', icon: <SettingsIcon />, url: '/' },
+	{ text: 'Create job', icon: <WorkIcon />, url: '/company/jobs' },
+	{ text: 'Upload cv', icon: <SettingsIcon />, url: '/candidate/signup' },
 ]
 
 export default function Sidebar() {
@@ -79,20 +75,6 @@ export default function Sidebar() {
 					</ListItem>
 				))}
 			</List>
-
-			{/* Bottom Icons */}
-			<Box
-				mb={2}
-				sx={{
-					width: '100%',
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-				}}
-			>
-				<CalendarTodayIcon sx={{ mb: 2, cursor: 'pointer' }} />
-				<Avatar sx={{ cursor: 'pointer' }} />
-			</Box>
 		</Drawer>
 	)
 }
